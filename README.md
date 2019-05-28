@@ -1,6 +1,6 @@
 # JS Notes
 
-a command line not taking application
+a command line note taking application
 
 ### Installation
 
