@@ -4,7 +4,7 @@ a command line note taking application
 
 ### Installation
 
-`yarn add -g jsnotes`
+`yarn global add jsnotes`
 
 ### Use
 
