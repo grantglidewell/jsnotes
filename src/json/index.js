@@ -1,15 +1,26 @@
-const jsonfile = require('jsonfile');
+const { readFileSync, writeFileSync } = require('jsonfile');
+const { existsSync, mkdirSync } = require('fs');
 const inquirer = require('inquirer');
+const os = require('os');
 
 const prompt = inquirer.createPromptModule();
-const file = `${__dirname}/data.json`;
+const file = () => {
+  const home = `${os.homedir()}/jsnotes/data.json`;
+  if (!existsSync(home)) {
+    if (!existsSync(`${os.homedir()}/jsnotes`)) {
+      mkdirSync(`${os.homedir()}/jsnotes`);
+    }
+    writeFileSync(home, {});
+  }
+  return home;
+};
 
 module.exports = {
   readNotes: () => {
-    return jsonfile.readFileSync(file);
+    return readFileSync(file());
   },
   writeNote: note => {
-    const notes = jsonfile.readFileSync(file);
+    const notes = readFileSync(file());
     // confirm replace note
     if (notes[note]) {
       return prompt({
@@ -19,18 +30,18 @@ module.exports = {
       }).then(({ confirm }) => {
         if (confirm) {
           const updatedNotes = { ...notes, [note.title]: { ...note } };
-          return jsonfile.writeFileSync(file, updatedNotes);
+          return writeFileSync(file(), updatedNotes);
         }
         return null;
       });
     }
     const updatedNotes = { ...notes, [note.title]: { ...note } };
-    return jsonfile.writeFileSync(file, updatedNotes);
+    return writeFileSync(file(), updatedNotes);
   },
   deleteNote: note => {
-    const notes = jsonfile.readFileSync(file);
+    const notes = readFileSync(file());
     delete notes[note];
-    jsonfile.writeFileSync(file, notes);
+    writeFileSync(file(), notes);
   },
   clearAll: () => {
     return prompt({
@@ -40,7 +51,7 @@ module.exports = {
       message: `Are you sure you want to Delete all notes?`,
     }).then(({ confirm }) => {
       if (confirm) {
-        return jsonfile.writeFileSync(file, {});
+        return writeFileSync(file(), {});
       }
       return null;
     });
