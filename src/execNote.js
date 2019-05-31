@@ -5,6 +5,10 @@ const prompt = inquirer.createPromptModule();
 const { writeNote, deleteNote, clearAll } = require('./json');
 const printNote = require('./printNote');
 
+// TODO: remove body and title flags in favor of quick
+// Create a note schema {title, type, payload: {message, items, completed}}
+// printNote needs to be updated to print the list, showing what is checked off
+
 module.exports = ({ t, n, l, b, d, h, clear, _ }, notes) => {
   if (h) {
     return console.table({
@@ -24,7 +28,8 @@ module.exports = ({ t, n, l, b, d, h, clear, _ }, notes) => {
     }
     prompt([
       { type: 'question', name: 'title', message: 'Title:' },
-      { type: 'question', name: 'body', message: 'Note' },
+      // type of note, checklist or text
+      { type: 'question', name: 'body', message: 'Note:' },
     ]).then(({ body, title }) => {
       writeNote({ title, body });
       return console.log(`Note created with title: ${title}`);
