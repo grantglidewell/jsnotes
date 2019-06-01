@@ -1,4 +1,4 @@
-import { TextNote, ListNote } from '../interfaces';
+import { TextNote, ListNote } from './interfaces';
 
 const { readFileSync, writeFileSync } = require('jsonfile');
 const { existsSync, mkdirSync } = require('fs');

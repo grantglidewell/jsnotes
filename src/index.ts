@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const yargs = require('yargs');
 
-const { readNotes } = require('./json');
+const { readNotes } = require('./handleJson');
 const execNote = require('./execNote');
 const initialPrompt = inquirer.createPromptModule();
 

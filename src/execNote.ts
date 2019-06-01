@@ -8,10 +8,6 @@ const printNote = require('./printNote');
 
 const prompt = inquirer.createPromptModule();
 
-// TODO: remove body and title flags in favor of quick
-// Create a note schema {title, type, payload: {message, items, completed}}
-// printNote needs to be updated to print the list, showing what is checked off
-
 module.exports = async ({ q, n, l, d, h, clear, _ }, notes) => {
   if (h) {
     return console.table({
