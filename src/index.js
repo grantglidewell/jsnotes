@@ -18,16 +18,20 @@ module.exports = async () => {
   // local -- create note in local mode // not implemented
   */
   const notes = readNotes();
-  const { t, b, _ } = yargs.argv;
-  let { n, l, d, h, clear } = yargs.argv;
+  const { _ } = yargs.argv;
+  let { q, n, l, d, h, clear } = yargs.argv;
   if (_.includes('l')) {
     l = true;
   }
   if (_.includes('n')) {
     n = true;
   }
+  if (_.includes('q')) {
+    q = true;
+  }
+  const noArgs = !l && !n && !d && !q && !clear;
 
-  if (!l && !n && !d && !clear) {
+  if (noArgs) {
     await prompt({
       type: 'list',
       name: 'selection',
@@ -56,10 +60,10 @@ module.exports = async () => {
       if (selection === 'Help') {
         h = true;
       }
-      return execNote({ t, n, l, b, d, h, clear, _ }, notes);
+      return execNote({ q, n, l, d, h, clear, _ }, notes);
     });
   } else {
-    return execNote({ t, n, l, b, d, h, clear, _ }, notes);
+    return execNote({ q, n, l, d, h, clear, _ }, notes);
   }
 };
 

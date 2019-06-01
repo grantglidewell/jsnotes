@@ -9,31 +9,33 @@ const printNote = require('./printNote');
 // Create a note schema {title, type, payload: {message, items, completed}}
 // printNote needs to be updated to print the list, showing what is checked off
 
-module.exports = ({ t, n, l, b, d, h, clear, _ }, notes) => {
+module.exports = ({ q, n, l, d, h, clear, _ }, notes) => {
   if (h) {
     return console.table({
       list: '-l or l to list out notes',
       new: '-n or n to create a new note (with prompts)',
-      title: '-t used with -n to create the note title',
-      body: '-b used with -n to create the note body',
+      quick: '-q used create a quick text note',
       delete: '-d to select a note to delete',
       clear: '--clear to delete all notes',
     });
   }
 
   if (n) {
-    if (b && t) {
-      writeNote({ title: t, body: b });
-      return console.log(`Note created with title: ${t}`);
-    }
+    // this should be async await due to branching logic
     prompt([
       { type: 'question', name: 'title', message: 'Title:' },
-      // type of note, checklist or text
+      // type of note, checklist or text?
       { type: 'question', name: 'body', message: 'Note:' },
     ]).then(({ body, title }) => {
       writeNote({ title, body });
       return console.log(`Note created with title: ${title}`);
     });
+  }
+  if (q) {
+    const body = _.join(' ').slice(1);
+    const title = new Date().toLocaleString();
+    writeNote({ title, body });
+    return console.log(`Note created with title: ${title}`);
   }
   if (l) {
     if (Object.keys(notes).length) {
