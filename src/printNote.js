@@ -10,17 +10,10 @@ module.exports = note => {
       dimBorder: true,
     }),
     boxen(note.body, {
-      margin: { top: 0, bottom: 1 },
+      margin: { top: 1, bottom: 1 },
       padding: 1,
       marginTop: 0,
-      borderStyle: {
-        topLeft: ' ',
-        topRight: ' ',
-        bottomLeft: '╰',
-        bottomRight: '╯',
-        horizontal: ' ',
-        vertical: '│',
-      },
+      borderStyle: 'double',
       borderColor: 'cyan',
     })
   );

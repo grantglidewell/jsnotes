@@ -13,7 +13,7 @@
   "rules": {
     "arrow-parens": "off",
     "implicit-arrow-linebreak": "off",
-    "no-console": 1,
+    "no-console": 0,
     "no-confusing-arrow": "off",
     "no-unused-vars": 1,
     "no-use-before-define": 1,
