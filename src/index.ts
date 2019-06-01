@@ -7,19 +7,9 @@ const execNote = require('./execNote');
 const initialPrompt = inquirer.createPromptModule();
 
 module.exports = async () => {
-  /* 
-  // Arguments
-  // -l - list notes
-  // -n - new note
-  // b - body
-  // t - title
-  // d - delete
-  // clear -- clear all notes
-  // local -- create note in local mode // not implemented
-  */
   const notes = readNotes();
   const { _ } = yargs.argv;
-  let { q, n, l, d, h, clear } = yargs.argv;
+  let { q, n, l, d, h, e, clear } = yargs.argv;
   if (_.includes('l')) {
     l = true;
   }
@@ -29,7 +19,10 @@ module.exports = async () => {
   if (_.includes('q')) {
     q = true;
   }
-  const noArgs = !l && !n && !d && !q && !clear;
+  if (_.includes('e')) {
+    e = true;
+  }
+  const noArgs = !l && !n && !d && !q && !e && !clear;
 
   if (noArgs) {
     await initialPrompt({
@@ -39,6 +32,7 @@ module.exports = async () => {
       choices: [
         'Create New Note',
         'List Notes',
+        'Edit Notes',
         'Delete Notes',
         'Clear Notes',
         'Help',
@@ -51,6 +45,9 @@ module.exports = async () => {
       if (selection === 'List Notes') {
         l = true;
       }
+      if (selection === 'Edit Notes') {
+        e = true;
+      }
       if (selection === 'Delete Notes') {
         d = true;
       }
@@ -60,9 +57,9 @@ module.exports = async () => {
       if (selection === 'Help') {
         h = true;
       }
-      return execNote({ q, n, l, d, h, clear, _ }, notes);
+      return execNote({ q, n, l, e, d, h, clear, _ }, notes);
     });
   } else {
-    return execNote({ q, n, l, d, h, clear, _ }, notes);
+    return execNote({ q, n, l, e, d, h, clear, _ }, notes);
   }
 };
