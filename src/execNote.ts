@@ -3,15 +3,17 @@ import { TextNote, ListNote } from './interfaces';
 
 const inquirer = require('inquirer');
 
-const { writeNote, deleteNote, clearAll } = require('./json');
+const { writeNote, deleteNote, clearAll } = require('./handleJson');
+const editNote = require('./editNote');
 const printNote = require('./printNote');
 
 const prompt = inquirer.createPromptModule();
 
-module.exports = async ({ q, n, l, d, h, clear, _ }, notes) => {
+module.exports = async ({ q, n, l, d, h, e, clear, _ }, notes) => {
   if (h) {
     return console.table({
       list: 'jsn -l or l to list out notes',
+      edit: 'jsn -e or e to list out notes to edit',
       new: 'jsn -n or n to create a new note (with prompts)',
       quick: 'jsn -q or q used create a quick text note',
       delete: 'jsn -d to select a note to delete',
@@ -75,6 +77,19 @@ module.exports = async ({ q, n, l, d, h, clear, _ }, notes) => {
         choices: Object.keys(notes),
       }).then(({ selected }) => {
         return printNote(notes[selected]);
+      });
+    }
+    return console.log("No notes :( --  use '-n' to create a new note");
+  }
+  if (e) {
+    if (Object.keys(notes).length) {
+      return prompt({
+        type: 'list',
+        name: 'selected',
+        message: 'Notes:',
+        choices: Object.keys(notes),
+      }).then(({ selected }) => {
+        return editNote(notes[selected]);
       });
     }
     return console.log("No notes :( --  use '-n' to create a new note");
