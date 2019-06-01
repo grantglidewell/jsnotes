@@ -45,5 +45,6 @@ module.exports = async (note: TextNote | ListNote) => {
       };
     });
     overwriteNote(newNote);
+    return console.log(`Updated note: ${note.title}`);
   }
 };
