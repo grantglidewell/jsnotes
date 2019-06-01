@@ -5,30 +5,61 @@ const prompt = inquirer.createPromptModule();
 const { writeNote, deleteNote, clearAll } = require('./json');
 const printNote = require('./printNote');
 
-module.exports = ({ t, n, l, b, d, h, clear, _ }, notes) => {
+// TODO: remove body and title flags in favor of quick
+// Create a note schema {title, type, payload: {message, items, completed}}
+// printNote needs to be updated to print the list, showing what is checked off
+
+module.exports = async ({ q, n, l, d, h, clear, _ }, notes) => {
   if (h) {
     return console.table({
-      list: '-l or l to list out notes',
-      new: '-n or n to create a new note (with prompts)',
-      title: '-t used with -n to create the note title',
-      body: '-b used with -n to create the note body',
-      delete: '-d to select a note to delete',
+      list: 'jsn -l or l to list out notes',
+      new: 'jsn -n or n to create a new note (with prompts)',
+      quick: 'jsn -q or q used create a quick text note',
+      delete: 'jsn -d to select a note to delete',
       clear: '--clear to delete all notes',
+      version: '--version to get the version',
     });
   }
 
   if (n) {
-    if (b && t) {
-      writeNote({ title: t, body: b });
-      return console.log(`Note created with title: ${t}`);
-    }
-    prompt([
+    // this should be async await due to branching logic
+    const { type, title } = await prompt([
       { type: 'question', name: 'title', message: 'Title:' },
-      { type: 'question', name: 'body', message: 'Note' },
-    ]).then(({ body, title }) => {
-      writeNote({ title, body });
+      {
+        type: 'list',
+        name: 'type',
+        choices: ['text', 'checklist'],
+        message: 'Type:',
+      },
+    ]);
+    if (type === 'text') {
+      const { body } = await prompt({
+        type: 'question',
+        name: 'body',
+        message: 'Note:',
+      });
+      writeNote({ title, body: { message: body }, type: 'text' });
       return console.log(`Note created with title: ${title}`);
-    });
+    }
+    if (type === 'checklist') {
+      const { body } = await prompt({
+        type: 'question',
+        name: 'body',
+        message: 'Items (separated by comma):',
+      });
+      writeNote({
+        title,
+        body: { items: body.split(','), completed: [] },
+        type: 'checklist',
+      });
+      return console.log(`Note created with title: ${title}`);
+    }
+  }
+  if (q) {
+    const body = _.join(' ').slice(1);
+    const title = new Date().toLocaleString();
+    writeNote({ title, body: { message: body }, type: 'text' });
+    return console.log(`Note created with title: ${title}`);
   }
   if (l) {
     if (Object.keys(notes).length) {
