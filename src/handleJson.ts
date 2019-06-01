@@ -40,6 +40,12 @@ module.exports = {
     const updatedNotes = { ...notes, [note.title]: { ...note } };
     return writeFileSync(file(), updatedNotes);
   },
+  overwriteNote: (note: TextNote | ListNote) => {
+    const notes = readFileSync(file());
+    // confirm replace note
+    const updatedNotes = { ...notes, [note.title]: { ...note } };
+    return writeFileSync(file(), updatedNotes);
+  },
   deleteNote: note => {
     const notes = readFileSync(file());
     delete notes[note];
