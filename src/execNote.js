@@ -27,14 +27,14 @@ module.exports = ({ q, n, l, d, h, clear, _ }, notes) => {
       // type of note, checklist or text?
       { type: 'question', name: 'body', message: 'Note:' },
     ]).then(({ body, title }) => {
-      writeNote({ title, body });
+      writeNote({ title, body: { message: body }, type: 'text' });
       return console.log(`Note created with title: ${title}`);
     });
   }
   if (q) {
     const body = _.join(' ').slice(1);
     const title = new Date().toLocaleString();
-    writeNote({ title, body });
+    writeNote({ title, body: { message: body }, type: 'text' });
     return console.log(`Note created with title: ${title}`);
   }
   if (l) {
