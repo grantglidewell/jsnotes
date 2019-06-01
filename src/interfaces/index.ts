@@ -9,3 +9,7 @@ export interface ListNote {
   body: { items: Array<String>; completed: Array<String> };
   type: 'checklist';
 }
+
+export interface Notes {
+  [key: string]: ListNote | TextNote;
+}

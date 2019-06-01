@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { TextNote, ListNote } from './interfaces';
+import { TextNote, ListNote, Notes } from './interfaces';
 
 const inquirer = require('inquirer');
 
@@ -9,7 +9,7 @@ const printNote = require('./printNote');
 
 const prompt = inquirer.createPromptModule();
 
-module.exports = async ({ q, n, l, d, h, e, clear, _ }, notes) => {
+module.exports = async ({ q, n, l, d, h, e, clear, _ }, notes: Notes) => {
   if (h) {
     return console.table({
       list: 'jsn -l or l to list out notes',

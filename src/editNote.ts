@@ -29,10 +29,9 @@ module.exports = async (note: TextNote | ListNote) => {
     const newNote: ListNote = await editPrompt({
       type: 'checkbox',
       name: 'completed',
-      choices: note.body.items,
-      default: note.body.completed.map(compItem =>
-        note.body.items.indexOf(compItem)
-      ),
+      choices: note.body.items.map(item => {
+        return { name: item, checked: note.body.completed.includes(item) };
+      }),
       message: note.title,
     }).then(({ completed }) => {
       return {
