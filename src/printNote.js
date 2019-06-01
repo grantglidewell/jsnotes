@@ -20,6 +20,7 @@ module.exports = note => {
     );
   }
   if (note.type === 'checklist') {
+    const { completed, items } = note.body;
     console.log(
       boxen(note.title, {
         margin: { top: 1 },
@@ -29,9 +30,11 @@ module.exports = note => {
         dimBorder: true,
       }),
       boxen(
-        note.body.items.map(item => {
-          return `${note.body.completed.includes(item) ? '[ ]' : '[X]'}item`;
-        }),
+        items
+          .map(item => {
+            return `${completed.includes(item) ? '[X]' : '[ ]'} ${item.trim()}`;
+          })
+          .join('\n'),
         {
           margin: { top: 1, bottom: 1 },
           padding: 1,
