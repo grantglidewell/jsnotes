@@ -1,13 +1,12 @@
 /* eslint-disable consistent-return */
+import { TextNote, ListNote } from './interfaces';
+
 const inquirer = require('inquirer');
 
-const prompt = inquirer.createPromptModule();
 const { writeNote, deleteNote, clearAll } = require('./json');
 const printNote = require('./printNote');
 
-// TODO: remove body and title flags in favor of quick
-// Create a note schema {title, type, payload: {message, items, completed}}
-// printNote needs to be updated to print the list, showing what is checked off
+const prompt = inquirer.createPromptModule();
 
 module.exports = async ({ q, n, l, d, h, clear, _ }, notes) => {
   if (h) {
@@ -38,7 +37,12 @@ module.exports = async ({ q, n, l, d, h, clear, _ }, notes) => {
         name: 'body',
         message: 'Note:',
       });
-      writeNote({ title, body: { message: body }, type: 'text' });
+      const textNote: TextNote = {
+        title,
+        body: { message: body },
+        type: 'text',
+      };
+      writeNote(textNote);
       return console.log(`Note created with title: ${title}`);
     }
     if (type === 'checklist') {
@@ -47,11 +51,12 @@ module.exports = async ({ q, n, l, d, h, clear, _ }, notes) => {
         name: 'body',
         message: 'Items (separated by comma):',
       });
-      writeNote({
+      const listNote: ListNote = {
         title,
         body: { items: body.split(','), completed: [] },
         type: 'checklist',
-      });
+      };
+      writeNote(listNote);
       return console.log(`Note created with title: ${title}`);
     }
   }

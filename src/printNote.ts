@@ -1,6 +1,8 @@
+import { TextNote, ListNote } from './interfaces';
+
 const boxen = require('boxen');
 
-module.exports = note => {
+module.exports = (note: TextNote | ListNote) => {
   if (note.type === 'text') {
     console.log(
       boxen(note.title, {

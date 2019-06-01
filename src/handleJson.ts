@@ -1,3 +1,5 @@
+import { TextNote, ListNote } from './interfaces';
+
 const { readFileSync, writeFileSync } = require('jsonfile');
 const { existsSync, mkdirSync } = require('fs');
 const inquirer = require('inquirer');
@@ -19,10 +21,10 @@ module.exports = {
   readNotes: () => {
     return readFileSync(file());
   },
-  writeNote: note => {
+  writeNote: (note: TextNote | ListNote) => {
     const notes = readFileSync(file());
     // confirm replace note
-    if (notes[note]) {
+    if (notes[note.title]) {
       return prompt({
         type: 'confirm',
         name: 'confirm',

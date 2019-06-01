@@ -2,9 +2,9 @@
 const inquirer = require('inquirer');
 const yargs = require('yargs');
 
-const prompt = inquirer.createPromptModule();
-const { readNotes } = require('./json');
+const { readNotes } = require('./handleJson');
 const execNote = require('./execNote');
+const initialPrompt = inquirer.createPromptModule();
 
 module.exports = async () => {
   /* 
@@ -32,7 +32,7 @@ module.exports = async () => {
   const noArgs = !l && !n && !d && !q && !clear;
 
   if (noArgs) {
-    await prompt({
+    await initialPrompt({
       type: 'list',
       name: 'selection',
       message: 'What would you like to do?',
@@ -66,5 +66,3 @@ module.exports = async () => {
     return execNote({ q, n, l, d, h, clear, _ }, notes);
   }
 };
-
-// todo: localized modes? mark paths, do not create local files
