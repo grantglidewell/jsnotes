@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import { createPromptModule } from 'inquirer';
-import yargs from 'yargs';
+import { argv } from 'yargs';
 
 import { readNotes } from './handleJson';
 import execNote from './execNote';
@@ -8,8 +8,8 @@ const initialPrompt = createPromptModule();
 
 module.exports = async () => {
   const notes = readNotes();
-  const { _ } = yargs.argv;
-  let { q, n, l, d, h, e, clear } = yargs.argv;
+  const { _ } = argv;
+  let { q, n, l, d, h, e, clear } = argv;
   if (_.includes('l')) {
     l = true;
   }
@@ -25,7 +25,7 @@ module.exports = async () => {
   const noArgs = !l && !n && !d && !q && !e && !clear;
 
   if (noArgs) {
-    await initialPrompt({
+    const { selection } = await initialPrompt({
       type: 'list',
       name: 'selection',
       message: 'What would you like to do?',
@@ -37,28 +37,27 @@ module.exports = async () => {
         'Clear Notes',
         'Help',
       ],
-    }).then(({ selection }: { selection: String }) => {
-      // set flags and continue execution
-      if (selection === 'Create New Note') {
-        n = true;
-      }
-      if (selection === 'List Notes') {
-        l = true;
-      }
-      if (selection === 'Edit Notes') {
-        e = true;
-      }
-      if (selection === 'Delete Notes') {
-        d = true;
-      }
-      if (selection === 'Clear Notes') {
-        clear = true;
-      }
-      if (selection === 'Help') {
-        h = true;
-      }
-      return execNote({ q, n, l, e, d, h, clear, _ }, notes);
     });
+    // set flags and continue execution
+    if (selection === 'Create New Note') {
+      n = true;
+    }
+    if (selection === 'List Notes') {
+      l = true;
+    }
+    if (selection === 'Edit Notes') {
+      e = true;
+    }
+    if (selection === 'Delete Notes') {
+      d = true;
+    }
+    if (selection === 'Clear Notes') {
+      clear = true;
+    }
+    if (selection === 'Help') {
+      h = true;
+    }
+    return execNote({ q, n, l, e, d, h, clear, _ }, notes);
   } else {
     return execNote({ q, n, l, e, d, h, clear, _ }, notes);
   }

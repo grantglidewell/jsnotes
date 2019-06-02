@@ -28,7 +28,7 @@ export default async (
   if (n) {
     // this should be async await due to branching logic
     const { type, title } = await prompt([
-      { type: 'question', name: 'title', message: 'Title:' },
+      { type: 'input', name: 'title', message: 'Title:' },
       {
         type: 'list',
         name: 'type',
@@ -38,7 +38,7 @@ export default async (
     ]);
     if (type === 'text') {
       const { body } = await prompt({
-        type: 'question',
+        type: 'input',
         name: 'body',
         message: 'Note:',
       });
@@ -52,7 +52,7 @@ export default async (
     }
     if (type === 'checklist') {
       const { body } = await prompt({
-        type: 'question',
+        type: 'input',
         name: 'body',
         message: 'Items (separated by comma):',
       });
@@ -73,32 +73,30 @@ export default async (
   }
   if (l) {
     if (Object.keys(notes).length) {
-      return prompt({
+      const { selected } = await prompt({
         type: 'list',
         name: 'selected',
         message: 'Notes:',
         choices: Object.keys(notes),
-      }).then(({ selected }: { selected: string }) => {
-        return printNote(notes[selected]);
       });
+      return printNote(notes[selected]);
     }
     return console.log("No notes :( --  use '-n' to create a new note");
   }
   if (e) {
     if (Object.keys(notes).length) {
-      return prompt({
+      const { selected } = await prompt({
         type: 'list',
         name: 'selected',
         message: 'Notes:',
         choices: Object.keys(notes),
-      }).then(({ selected }: { selected: string }) => {
-        return editNote(notes[selected]);
       });
+      return editNote(notes[selected]);
     }
     return console.log("No notes :( --  use '-n' to create a new note");
   }
   if (d) {
-    return prompt([
+    const { selected, confirm } = await prompt([
       {
         type: 'list',
         name: 'selected',
@@ -110,9 +108,8 @@ export default async (
         default: true,
         message: 'are you sure you want to delete this note?',
       },
-    ]).then(({ selected, confirm }: { selected: string; confirm: Boolean }) =>
-      confirm ? deleteNote(selected) : null
-    );
+    ]);
+    return confirm ? deleteNote(selected) : null;
   }
   if (clear) {
     return clearAll();
