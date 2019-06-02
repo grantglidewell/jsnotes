@@ -1,17 +1,15 @@
 /* eslint-disable consistent-return */
 import { TextNote, ListNote, Notes } from './interfaces';
-
-const inquirer = require('inquirer');
-
 import { AppFlags } from './interfaces';
+import { createPromptModule } from 'inquirer';
 
-const { writeNote, deleteNote, clearAll } = require('./handleJson');
-const editNote = require('./editNote');
-const printNote = require('./printNote');
+import { writeNote, deleteNote, clearAll } from './handleJson';
+import editNote from './editNote';
+import printNote from './printNote';
 
-const prompt = inquirer.createPromptModule();
+const prompt = createPromptModule();
 
-module.exports = async (
+export default async (
   { q, n, l, d, h, e, clear, _ }: AppFlags,
   notes: Notes
 ) => {

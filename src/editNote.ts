@@ -1,12 +1,11 @@
 import { TextNote, ListNote } from './interfaces';
+import { createPromptModule } from 'inquirer';
 
-const inquirer = require('inquirer');
+import { overwriteNote } from './handleJson';
 
-const { overwriteNote } = require('./handleJson');
+const editPrompt = createPromptModule();
 
-const editPrompt = inquirer.createPromptModule();
-
-module.exports = async (note: TextNote | ListNote) => {
+export default async (note: TextNote | ListNote) => {
   if (note.type === 'text') {
     const newNote: TextNote = await editPrompt({
       type: 'question',

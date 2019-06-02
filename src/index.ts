@@ -1,10 +1,10 @@
 /* eslint-disable consistent-return */
-const inquirer = require('inquirer');
-const yargs = require('yargs');
+import { createPromptModule } from 'inquirer';
+import yargs from 'yargs';
 
-const { readNotes } = require('./handleJson');
-const execNote = require('./execNote');
-const initialPrompt = inquirer.createPromptModule();
+import { readNotes } from './handleJson';
+import execNote from './execNote';
+const initialPrompt = createPromptModule();
 
 module.exports = async () => {
   const notes = readNotes();
