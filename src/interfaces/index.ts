@@ -13,3 +13,14 @@ export interface ListNote {
 export interface Notes {
   [key: string]: ListNote | TextNote;
 }
+
+export interface AppFlags {
+  q: String;
+  n: String;
+  l: String;
+  d: String;
+  h: String;
+  e: String;
+  clear: String;
+  _: Array<String>;
+}

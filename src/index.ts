@@ -37,7 +37,7 @@ module.exports = async () => {
         'Clear Notes',
         'Help',
       ],
-    }).then(({ selection }) => {
+    }).then(({ selection }: { selection: String }) => {
       // set flags and continue execution
       if (selection === 'Create New Note') {
         n = true;

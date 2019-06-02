@@ -1,4 +1,4 @@
-import { TextNote, ListNote } from './interfaces';
+import { TextNote, ListNote, Notes } from './interfaces';
 
 const { readFileSync, writeFileSync } = require('jsonfile');
 const { existsSync, mkdirSync } = require('fs');
@@ -22,14 +22,14 @@ module.exports = {
     return readFileSync(file());
   },
   writeNote: (note: TextNote | ListNote) => {
-    const notes = readFileSync(file());
+    const notes: Notes = readFileSync(file());
     // confirm replace note
     if (notes[note.title]) {
       return prompt({
         type: 'confirm',
         name: 'confirm',
         message: `Note named: '${note}' exists, overwrite?`,
-      }).then(({ confirm }) => {
+      }).then(({ confirm }: { confirm: Boolean }) => {
         if (confirm) {
           const updatedNotes = { ...notes, [note.title]: { ...note } };
           return writeFileSync(file(), updatedNotes);
@@ -41,13 +41,13 @@ module.exports = {
     return writeFileSync(file(), updatedNotes);
   },
   overwriteNote: (note: TextNote | ListNote) => {
-    const notes = readFileSync(file());
+    const notes: Notes = readFileSync(file());
     // confirm replace note
     const updatedNotes = { ...notes, [note.title]: { ...note } };
     return writeFileSync(file(), updatedNotes);
   },
-  deleteNote: note => {
-    const notes = readFileSync(file());
+  deleteNote: (note: string) => {
+    const notes: Notes = readFileSync(file());
     delete notes[note];
     writeFileSync(file(), notes);
   },
@@ -57,7 +57,7 @@ module.exports = {
       name: 'confirm',
       default: false,
       message: `Are you sure you want to Delete all notes?`,
-    }).then(({ confirm }) => {
+    }).then(({ confirm }: { confirm: Boolean }) => {
       if (confirm) {
         return writeFileSync(file(), {});
       }

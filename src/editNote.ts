@@ -13,7 +13,7 @@ module.exports = async (note: TextNote | ListNote) => {
       name: 'message',
       default: note.body.message,
       message: note.title,
-    }).then(({ message }) => {
+    }).then(({ message }: { message: String }) => {
       return {
         title: note.title,
         type: 'text',
@@ -33,7 +33,7 @@ module.exports = async (note: TextNote | ListNote) => {
         return { name: item, checked: note.body.completed.includes(item) };
       }),
       message: note.title,
-    }).then(({ completed }) => {
+    }).then(({ completed }: { completed: String }) => {
       return {
         title: note.title,
         type: 'checklist',

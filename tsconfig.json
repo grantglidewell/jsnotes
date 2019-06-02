@@ -2,7 +2,9 @@
   "compilerOptions": {
     "outDir": "./dist",
     "allowJs": true,
-    "target": "es5",
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
     "alwaysStrict": true
   },
   "include": ["./src/**/*"]

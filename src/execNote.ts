@@ -3,13 +3,18 @@ import { TextNote, ListNote, Notes } from './interfaces';
 
 const inquirer = require('inquirer');
 
+import { AppFlags } from './interfaces';
+
 const { writeNote, deleteNote, clearAll } = require('./handleJson');
 const editNote = require('./editNote');
 const printNote = require('./printNote');
 
 const prompt = inquirer.createPromptModule();
 
-module.exports = async ({ q, n, l, d, h, e, clear, _ }, notes: Notes) => {
+module.exports = async (
+  { q, n, l, d, h, e, clear, _ }: AppFlags,
+  notes: Notes
+) => {
   if (h) {
     return console.table({
       list: 'jsn -l or l to list out notes',
@@ -75,7 +80,7 @@ module.exports = async ({ q, n, l, d, h, e, clear, _ }, notes: Notes) => {
         name: 'selected',
         message: 'Notes:',
         choices: Object.keys(notes),
-      }).then(({ selected }) => {
+      }).then(({ selected }: { selected: string }) => {
         return printNote(notes[selected]);
       });
     }
@@ -88,7 +93,7 @@ module.exports = async ({ q, n, l, d, h, e, clear, _ }, notes: Notes) => {
         name: 'selected',
         message: 'Notes:',
         choices: Object.keys(notes),
-      }).then(({ selected }) => {
+      }).then(({ selected }: { selected: string }) => {
         return editNote(notes[selected]);
       });
     }
@@ -107,7 +112,9 @@ module.exports = async ({ q, n, l, d, h, e, clear, _ }, notes: Notes) => {
         default: true,
         message: 'are you sure you want to delete this note?',
       },
-    ]).then(({ selected, confirm }) => (confirm ? deleteNote(selected) : null));
+    ]).then(({ selected, confirm }: { selected: string; confirm: Boolean }) =>
+      confirm ? deleteNote(selected) : null
+    );
   }
   if (clear) {
     return clearAll();
