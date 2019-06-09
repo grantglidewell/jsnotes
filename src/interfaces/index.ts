@@ -1,12 +1,12 @@
 export interface TextNote {
   title: string;
-  body: { message: String };
+  body: { message: string };
   type: 'text';
 }
 
 export interface ListNote {
   title: string;
-  body: { items: Array<String>; completed: Array<String> };
+  body: { items: Array<string>; completed: Array<string> };
   type: 'checklist';
 }
 
@@ -15,12 +15,12 @@ export interface Notes {
 }
 
 export interface AppFlags {
-  q: String;
-  n: String;
-  l: String;
-  d: String;
-  h: String;
-  e: String;
-  clear: String;
-  _: Array<String>;
+  q: boolean;
+  n: boolean;
+  l: boolean;
+  d: boolean;
+  h: boolean;
+  e: boolean;
+  clear: boolean;
+  _: Array<string>;
 }

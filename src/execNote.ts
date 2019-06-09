@@ -1,12 +1,13 @@
 /* eslint-disable consistent-return */
 import { TextNote, ListNote, Notes } from './interfaces';
 import { AppFlags } from './interfaces';
-import { createPromptModule } from 'inquirer';
+import * as inquirer from 'inquirer';
 
 import { writeNote, deleteNote, clearAll } from './handleJson';
 import editNote from './editNote';
 import printNote from './printNote';
 
+const { createPromptModule } = inquirer;
 const prompt = createPromptModule();
 
 export default async (

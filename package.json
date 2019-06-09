@@ -19,13 +19,14 @@
     "boxen": "^3.2.0",
     "inquirer": "^6.3.1",
     "jsonfile": "^5.0.0",
-    "yargs": "^13.2.4"
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "@types/inquirer": "^6.0.3",
     "@types/jsonfile": "^5.0.0",
+    "@types/minimist": "^1.2.0",
     "@types/node": "^12.0.4",
-    "@types/yargs": "^13.0.0",
+    "@types/rx": "^4.1.1",
     "babel-eslint": "10.0.1",
     "eslint": "5.15.1",
     "eslint-config-airbnb": "17.1.0",
@@ -50,6 +51,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "watch": "tsc --watch",
     "prepublishOnly": "yarn build",
     "lint": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore"
   }

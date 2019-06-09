@@ -1,10 +1,13 @@
 /* eslint-disable consistent-return */
-import { createPromptModule } from 'inquirer';
-import { argv } from 'yargs';
+import * as inquirer from 'inquirer';
 
 import { readNotes } from './handleJson';
 import execNote from './execNote';
+
+const { createPromptModule } = inquirer;
 const initialPrompt = createPromptModule();
+
+var argv = require('minimist')(process.argv.slice(2));
 
 module.exports = async () => {
   const notes = readNotes();

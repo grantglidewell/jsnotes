@@ -1,6 +1,6 @@
 import { TextNote, ListNote } from './interfaces';
 
-import boxen from 'boxen';
+const boxen = require('boxen');
 
 export default (note: TextNote | ListNote) => {
   if (note.type === 'text') {

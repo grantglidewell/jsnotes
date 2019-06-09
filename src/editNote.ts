@@ -1,13 +1,14 @@
 import { TextNote, ListNote } from './interfaces';
-import { createPromptModule } from 'inquirer';
+import * as inquirer from 'inquirer';
 
 import { overwriteNote } from './handleJson';
 
+const { createPromptModule } = inquirer;
 const editPrompt = createPromptModule();
 
 export default async (note: TextNote | ListNote) => {
   if (note.type === 'text') {
-    const { message }: { message: string } = await editPrompt({
+    const { message } = await editPrompt({
       type: 'input',
       name: 'message',
       default: note.body.message,
@@ -24,7 +25,7 @@ export default async (note: TextNote | ListNote) => {
     return console.log(`Updated note: ${note.title}`);
   }
   if (note.type === 'checklist') {
-    const completed = await editPrompt({
+    const { completed } = await editPrompt({
       type: 'checkbox',
       name: 'completed',
       choices: note.body.items.map(item => {
