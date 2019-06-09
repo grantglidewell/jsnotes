@@ -2,7 +2,7 @@ import { TextNote, ListNote } from './interfaces';
 
 const boxen = require('boxen');
 
-module.exports = (note: TextNote | ListNote) => {
+export default (note: TextNote | ListNote) => {
   if (note.type === 'text') {
     console.log(
       boxen(note.title, {

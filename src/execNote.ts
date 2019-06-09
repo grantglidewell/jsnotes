@@ -1,17 +1,16 @@
 /* eslint-disable consistent-return */
 import { TextNote, ListNote, Notes } from './interfaces';
-
-const inquirer = require('inquirer');
-
 import { AppFlags } from './interfaces';
+import * as inquirer from 'inquirer';
 
-const { writeNote, deleteNote, clearAll } = require('./handleJson');
-const editNote = require('./editNote');
-const printNote = require('./printNote');
+import { writeNote, deleteNote, clearAll } from './handleJson';
+import editNote from './editNote';
+import printNote from './printNote';
 
-const prompt = inquirer.createPromptModule();
+const { createPromptModule } = inquirer;
+const prompt = createPromptModule();
 
-module.exports = async (
+export default async (
   { q, n, l, d, h, e, clear, _ }: AppFlags,
   notes: Notes
 ) => {
@@ -30,7 +29,7 @@ module.exports = async (
   if (n) {
     // this should be async await due to branching logic
     const { type, title } = await prompt([
-      { type: 'question', name: 'title', message: 'Title:' },
+      { type: 'input', name: 'title', message: 'Title:' },
       {
         type: 'list',
         name: 'type',
@@ -40,7 +39,7 @@ module.exports = async (
     ]);
     if (type === 'text') {
       const { body } = await prompt({
-        type: 'question',
+        type: 'input',
         name: 'body',
         message: 'Note:',
       });
@@ -54,7 +53,7 @@ module.exports = async (
     }
     if (type === 'checklist') {
       const { body } = await prompt({
-        type: 'question',
+        type: 'input',
         name: 'body',
         message: 'Items (separated by comma):',
       });
@@ -75,32 +74,30 @@ module.exports = async (
   }
   if (l) {
     if (Object.keys(notes).length) {
-      return prompt({
+      const { selected } = await prompt({
         type: 'list',
         name: 'selected',
         message: 'Notes:',
         choices: Object.keys(notes),
-      }).then(({ selected }: { selected: string }) => {
-        return printNote(notes[selected]);
       });
+      return printNote(notes[selected]);
     }
     return console.log("No notes :( --  use '-n' to create a new note");
   }
   if (e) {
     if (Object.keys(notes).length) {
-      return prompt({
+      const { selected } = await prompt({
         type: 'list',
         name: 'selected',
         message: 'Notes:',
         choices: Object.keys(notes),
-      }).then(({ selected }: { selected: string }) => {
-        return editNote(notes[selected]);
       });
+      return editNote(notes[selected]);
     }
     return console.log("No notes :( --  use '-n' to create a new note");
   }
   if (d) {
-    return prompt([
+    const { selected, confirm } = await prompt([
       {
         type: 'list',
         name: 'selected',
@@ -112,9 +109,8 @@ module.exports = async (
         default: true,
         message: 'are you sure you want to delete this note?',
       },
-    ]).then(({ selected, confirm }: { selected: string; confirm: Boolean }) =>
-      confirm ? deleteNote(selected) : null
-    );
+    ]);
+    return confirm ? deleteNote(selected) : null;
   }
   if (clear) {
     return clearAll();
