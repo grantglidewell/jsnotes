@@ -34,7 +34,7 @@
     "typescript": "^3.5.1"
   },
   "engines": {
-    "node": "<=8"
+    "node": ">=8"
   },
   "scripts": {
     "build": "tsc",
