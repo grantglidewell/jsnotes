@@ -7,7 +7,7 @@ import * as os from 'os';
 
 const prompt = createPromptModule();
 
-const file = () => {
+const file = (): string => {
   const home = `${os.homedir()}/jsnotes/data.json`;
   if (!existsSync(home)) {
     if (!existsSync(`${os.homedir()}/jsnotes`)) {

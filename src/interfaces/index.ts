@@ -24,3 +24,8 @@ export interface AppFlags {
   clear: boolean;
   _: Array<string>;
 }
+
+export interface Config {
+  token: string;
+  projectId: string;
+}
