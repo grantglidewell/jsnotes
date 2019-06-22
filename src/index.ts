@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /* eslint-disable consistent-return */
 import * as inquirer from 'inquirer';
 
@@ -10,7 +9,7 @@ const initialPrompt = createPromptModule();
 
 var argv = require('minimist')(process.argv.slice(2));
 
-(async () => {
+module.exports = async () => {
   const notes = readNotes();
   const { _ } = argv;
   let { q, n, l, d, h, e, clear } = argv;
@@ -65,4 +64,4 @@ var argv = require('minimist')(process.argv.slice(2));
   } else {
     return execNote({ q, n, l, e, d, h, clear, _ }, notes);
   }
-})();
+};

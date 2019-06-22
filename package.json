@@ -1,7 +1,7 @@
 {
   "name": "jsnotes",
   "version": "0.2.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "license": "MIT",
   "preferGlobal": true,
   "author": "Grant Glidewell <grant@grantglidewell.com>",
@@ -13,7 +13,7 @@
     "todo"
   ],
   "bin": {
-    "jsn": "dist/index.js"
+    "jsn": "index.js"
   },
   "dependencies": {
     "boxen": "^3.2.0",
