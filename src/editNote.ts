@@ -21,8 +21,7 @@ export default async (note: TextNote | ListNote) => {
         message,
       },
     };
-    writeNote(newNote);
-    return console.log(`Updated note: ${note.title}`);
+    return writeNote(newNote);
   }
   if (note.type === 'checklist') {
     const { completed } = await editPrompt({
@@ -41,7 +40,6 @@ export default async (note: TextNote | ListNote) => {
         completed,
       },
     };
-    writeNote(newNote);
-    return console.log(`Updated note: ${note.title}`);
+    return writeNote(newNote);
   }
 };

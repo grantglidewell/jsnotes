@@ -28,16 +28,19 @@ export const writeNote = async (note: TextNote | ListNote) => {
     const { confirm } = await prompt({
       type: 'confirm',
       name: 'confirm',
-      message: `Note named: '${note}' exists, overwrite?`,
+      message: `Note named: '${note.title}' exists, overwrite?`,
     });
     if (confirm) {
       const updatedNotes = { ...notes, [note.title]: { ...note } };
-      return writeFileSync(file(), JSON.stringify(updatedNotes));
+      writeFileSync(file(), JSON.stringify(updatedNotes));
+      return console.log(`Updated note: ${note.title}`);
     }
-    return null;
+    return console.log(`nothing updated`);
+  } else {
+    const updatedNotes = { ...notes, [note.title]: { ...note } };
+    writeFileSync(file(), JSON.stringify(updatedNotes));
+    return console.log(`Updated note: ${note.title}`);
   }
-  const updatedNotes = { ...notes, [note.title]: { ...note } };
-  return writeFileSync(file(), JSON.stringify(updatedNotes));
 };
 
 export const deleteNote = (note: string) => {
