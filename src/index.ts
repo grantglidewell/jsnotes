@@ -12,7 +12,7 @@ var argv = require('minimist')(process.argv.slice(2));
 module.exports = async () => {
   const notes = readNotes();
   const { _ } = argv;
-  let { q, n, l, d, h, e, clear } = argv;
+  let { q, n, l, d, h, e, config, clear } = argv;
   if (_.includes('l')) {
     l = true;
   }
@@ -25,7 +25,7 @@ module.exports = async () => {
   if (_.includes('e')) {
     e = true;
   }
-  const noArgs = !l && !n && !d && !q && !e && !clear;
+  const noArgs = !l && !n && !d && !q && !e && !clear && !config;
 
   if (noArgs) {
     const { selection } = await initialPrompt({
@@ -38,6 +38,7 @@ module.exports = async () => {
         'Edit Notes',
         'Delete Notes',
         'Clear Notes',
+        'Configure Todoist API',
         'Help',
       ],
     });
@@ -60,8 +61,11 @@ module.exports = async () => {
     if (selection === 'Help') {
       h = true;
     }
-    return execNote({ q, n, l, e, d, h, clear, _ }, notes);
+    if (selection === 'Configure Todoist API') {
+      config = true;
+    }
+    return execNote({ q, n, l, e, d, h, clear, config, _ }, notes);
   } else {
-    return execNote({ q, n, l, e, d, h, clear, _ }, notes);
+    return execNote({ q, n, l, e, d, h, clear, config, _ }, notes);
   }
 };

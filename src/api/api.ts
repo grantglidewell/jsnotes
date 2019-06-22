@@ -1,10 +1,13 @@
+import { ApiInterface } from '../interfaces';
+
 import fetch from 'node-fetch';
 
-export function api<T>(
-  url: string,
-  token: string,
-  projectId?: string
-): Promise<T> {
+export function api<T>({
+  url,
+  token,
+  projectId,
+  note,
+}: ApiInterface): Promise<T> {
   return fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,

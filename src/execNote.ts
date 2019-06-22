@@ -6,12 +6,13 @@ import * as inquirer from 'inquirer';
 import { writeNote, deleteNote, clearAll } from './handleJson';
 import editNote from './editNote';
 import printNote from './printNote';
+import configureAPI from './api/configure';
 
 const { createPromptModule } = inquirer;
 const prompt = createPromptModule();
 
 export default async (
-  { q, n, l, d, h, e, clear, _ }: AppFlags,
+  { q, n, l, d, h, e, clear, config, _ }: AppFlags,
   notes: Notes
 ) => {
   if (h) {
@@ -22,12 +23,12 @@ export default async (
       quick: 'jsn -q or q used create a quick text note',
       delete: 'jsn -d to select a note to delete',
       clear: '--clear to delete all notes',
+      config: '--config to set up the Todoist API',
       version: '--version to get the version',
     });
   }
 
   if (n) {
-    // this should be async await due to branching logic
     const { type, title } = await prompt([
       { type: 'input', name: 'title', message: 'Title:' },
       {
@@ -114,5 +115,8 @@ export default async (
   }
   if (clear) {
     return clearAll();
+  }
+  if (config) {
+    return configureAPI();
   }
 };

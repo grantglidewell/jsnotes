@@ -22,10 +22,18 @@ export interface AppFlags {
   h: boolean;
   e: boolean;
   clear: boolean;
+  config: boolean;
   _: Array<string>;
 }
 
 export interface Config {
   token: string;
   projectId: string;
+}
+
+export interface ApiInterface {
+  url: string;
+  token: string;
+  projectId?: string;
+  note?: TextNote;
 }
