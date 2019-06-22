@@ -1,8 +1,7 @@
 import { TextNote, ListNote, Notes } from './interfaces';
 
-import { readFileSync, writeFileSync } from 'jsonfile';
 import { createPromptModule } from 'inquirer';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import * as os from 'os';
 
 const prompt = createPromptModule();
@@ -13,17 +12,17 @@ const file = (): string => {
     if (!existsSync(`${os.homedir()}/jsnotes`)) {
       mkdirSync(`${os.homedir()}/jsnotes`);
     }
-    writeFileSync(home, {});
+    writeFileSync(home, '{}');
   }
   return home;
 };
 
-export const readNotes = () => {
-  return readFileSync(file());
+export const readNotes = (): Notes => {
+  return JSON.parse(readFileSync(file()).toString());
 };
 
 export const writeNote = async (note: TextNote | ListNote) => {
-  const notes: Notes = readFileSync(file());
+  const notes: Notes = readNotes();
   // confirm replace note
   if (notes[note.title]) {
     const { confirm } = await prompt({
@@ -33,25 +32,18 @@ export const writeNote = async (note: TextNote | ListNote) => {
     });
     if (confirm) {
       const updatedNotes = { ...notes, [note.title]: { ...note } };
-      return writeFileSync(file(), updatedNotes);
+      return writeFileSync(file(), JSON.stringify(updatedNotes));
     }
     return null;
   }
   const updatedNotes = { ...notes, [note.title]: { ...note } };
-  return writeFileSync(file(), updatedNotes);
-};
-
-export const overwriteNote = (note: TextNote | ListNote) => {
-  const notes: Notes = readFileSync(file());
-  // confirm replace note
-  const updatedNotes = { ...notes, [note.title]: { ...note } };
-  return writeFileSync(file(), updatedNotes);
+  return writeFileSync(file(), JSON.stringify(updatedNotes));
 };
 
 export const deleteNote = (note: string) => {
-  const notes: Notes = readFileSync(file());
+  const notes: Notes = readNotes();
   delete notes[note];
-  writeFileSync(file(), notes);
+  writeFileSync(file(), JSON.stringify(notes));
   return console.log(`Deleted ${note}`);
 };
 
@@ -64,7 +56,7 @@ export const clearAll = async () => {
   });
 
   if (confirm) {
-    return writeFileSync(file(), {});
+    return writeFileSync(file(), JSON.stringify({}));
   }
   return null;
 };

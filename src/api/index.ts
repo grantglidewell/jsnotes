@@ -1,9 +1,8 @@
 import { Config } from '../interfaces';
 
 import { api } from './api';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 
-import { readFileSync, writeFileSync } from 'jsonfile';
 import * as os from 'os';
 
 const config = (): Config => {
@@ -12,9 +11,9 @@ const config = (): Config => {
     if (!existsSync(`${os.homedir()}/jsnotes`)) {
       mkdirSync(`${os.homedir()}/jsnotes`);
     }
-    writeFileSync(home, { token, projectId });
+    writeFileSync(home, JSON.stringify({ token, projectId }));
   }
-  return readFileSync(home);
+  return JSON.parse(readFileSync(home).toString());
 };
 
 const { token, projectId } = config();

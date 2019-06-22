@@ -1,7 +1,7 @@
 import { TextNote, ListNote } from './interfaces';
 import * as inquirer from 'inquirer';
 
-import { overwriteNote } from './handleJson';
+import { writeNote } from './handleJson';
 
 const { createPromptModule } = inquirer;
 const editPrompt = createPromptModule();
@@ -21,7 +21,7 @@ export default async (note: TextNote | ListNote) => {
         message,
       },
     };
-    overwriteNote(newNote);
+    writeNote(newNote);
     return console.log(`Updated note: ${note.title}`);
   }
   if (note.type === 'checklist') {
@@ -41,7 +41,7 @@ export default async (note: TextNote | ListNote) => {
         completed,
       },
     };
-    overwriteNote(newNote);
+    writeNote(newNote);
     return console.log(`Updated note: ${note.title}`);
   }
 };
