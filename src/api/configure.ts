@@ -1,5 +1,7 @@
 import { Config } from '../interfaces';
 
+import { api } from './api';
+
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import * as inquirer from 'inquirer';
 
@@ -50,7 +52,17 @@ export default async () => {
         'Add your Token from Todoist \n you can create one in your Todoist account under Settings > Integrations \n API Token:',
     },
   ]);
-  // use the token to create a JsNotes project
-
+  // if(confirm){
+  //   //check if a JsNotes project exists?
+  // }
+  // use the token to create a JSNotes project
+  const newProject = await api({
+    token: token || userToken,
+    url: `https://beta.todoist.com/API/v8/projects`,
+    method: 'POST',
+    payload: { name: 'JSNotes' },
+  });
+  console.log({ newProject });
   // store the token and project id in the config
+  // add existing TEXT notes to that project
 };

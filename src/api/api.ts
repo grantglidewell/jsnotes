@@ -1,25 +1,22 @@
 import { ApiInterface } from '../interfaces';
 
-import fetch from 'node-fetch';
+import fetch from 'axios';
 
-export function api<T>({
-  url,
-  token,
-  projectId,
-  note,
-}: ApiInterface): Promise<T> {
-  return fetch(url, {
+export function api<T>(args: ApiInterface): Promise<T> {
+  const { url, token, payload, method } = args;
+
+  const requestOptions = {
+    method,
+    data: payload && JSON.stringify(payload),
     headers: {
       Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-  })
+  };
+  return fetch(url, requestOptions)
     .then(response => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
+      return response.data;
     })
-    .then(data => {
-      return data.data;
-    });
+    .catch(console.error);
 }

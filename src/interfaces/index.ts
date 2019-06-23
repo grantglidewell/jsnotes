@@ -2,6 +2,7 @@ export interface TextNote {
   title: string;
   body: { message: string };
   type: 'text';
+  id?: number;
 }
 
 export interface ListNote {
@@ -34,6 +35,6 @@ export interface Config {
 export interface ApiInterface {
   url: string;
   token: string;
-  projectId?: string;
-  note?: TextNote;
+  method: 'GET' | 'POST' | 'DELETE';
+  payload?: { project_id?: string; content?: string; name?: string };
 }
