@@ -1,8 +1,9 @@
 import { ApiInterface } from '../interfaces';
 
+import v4 from 'uuid/v4';
 import fetch from 'axios';
 
-export function api<T>(args: ApiInterface): Promise<T> {
+export function api<T>(args: ApiInterface): Promise<{ id: string }> {
   const { url, token, payload, method } = args;
 
   const requestOptions = {
@@ -12,11 +13,21 @@ export function api<T>(args: ApiInterface): Promise<T> {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      'X-Request-Id': v4(),
     },
   };
   return fetch(url, requestOptions)
     .then(response => {
-      return response.data;
+      if (response.status < 400 && response.data) {
+        return response.data;
+      } else {
+        throw new Error(response.statusText);
+      }
     })
-    .catch(console.error);
+    .catch(err =>
+      console.error(
+        `there was a problem with the request ${err.statusText &&
+          err.statusText}`
+      )
+    );
 }

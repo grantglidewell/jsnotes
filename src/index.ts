@@ -2,6 +2,7 @@
 import * as inquirer from 'inquirer';
 
 import { readNotes } from './handleJson';
+import { config as isConfig } from './api/configure';
 import execNote from './execNote';
 
 const { createPromptModule } = inquirer;
@@ -10,6 +11,9 @@ const initialPrompt = createPromptModule();
 var argv = require('minimist')(process.argv.slice(2));
 
 module.exports = async () => {
+  const { token, projectId } = isConfig();
+  const hasAPIToken = Boolean(token && projectId);
+
   const notes = readNotes();
   const { _ } = argv;
   let { q, n, l, d, h, e, config, clear } = argv;
@@ -64,8 +68,8 @@ module.exports = async () => {
     if (selection === 'Configure Todoist API') {
       config = true;
     }
-    return execNote({ q, n, l, e, d, h, clear, config, _ }, notes);
+    return execNote({ q, n, l, e, d, h, clear, config, _, hasAPIToken }, notes);
   } else {
-    return execNote({ q, n, l, e, d, h, clear, config, _ }, notes);
+    return execNote({ q, n, l, e, d, h, clear, config, _, hasAPIToken }, notes);
   }
 };

@@ -2,7 +2,7 @@ export interface TextNote {
   title: string;
   body: { message: string };
   type: 'text';
-  id?: number;
+  id?: string;
 }
 
 export interface ListNote {
@@ -25,6 +25,7 @@ export interface AppFlags {
   clear: boolean;
   config: boolean;
   _: Array<string>;
+  hasAPIToken: Boolean;
 }
 
 export interface Config {

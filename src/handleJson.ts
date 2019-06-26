@@ -12,7 +12,7 @@ const file = (): string => {
     if (!existsSync(`${os.homedir()}/jsnotes`)) {
       mkdirSync(`${os.homedir()}/jsnotes`);
     }
-    writeFileSync(home, '{}');
+    writeFileSync(home, '');
   }
   return home;
 };
@@ -59,7 +59,7 @@ export const clearAll = async () => {
   });
 
   if (confirm) {
-    return writeFileSync(file(), JSON.stringify({}));
+    return writeFileSync(file(), '');
   }
   return null;
 };

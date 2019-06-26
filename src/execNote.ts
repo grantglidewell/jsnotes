@@ -3,6 +3,7 @@ import { TextNote, ListNote, Notes } from './interfaces';
 import { AppFlags } from './interfaces';
 import * as inquirer from 'inquirer';
 
+import { createItem } from './api';
 import { writeNote, deleteNote, clearAll } from './handleJson';
 import editNote from './editNote';
 import printNote from './printNote';
@@ -12,7 +13,7 @@ const { createPromptModule } = inquirer;
 const prompt = createPromptModule();
 
 export default async (
-  { q, n, l, d, h, e, clear, config, _ }: AppFlags,
+  { q, n, l, d, h, e, clear, config, _, hasAPIToken }: AppFlags,
   notes: Notes
 ) => {
   if (h) {
@@ -49,6 +50,10 @@ export default async (
         body: { message: body },
         type: 'text',
       };
+      if (hasAPIToken) {
+        const { id } = await createItem(textNote);
+        textNote.id = id;
+      }
       writeNote(textNote);
       return console.log(`Note created with title: ${title}`);
     }
