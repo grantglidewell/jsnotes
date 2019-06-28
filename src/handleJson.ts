@@ -12,7 +12,7 @@ const file = (): string => {
     if (!existsSync(`${os.homedir()}/jsnotes`)) {
       mkdirSync(`${os.homedir()}/jsnotes`);
     }
-    writeFileSync(home, '');
+    writeFileSync(home, '{}');
   }
   return home;
 };
