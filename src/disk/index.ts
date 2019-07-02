@@ -42,17 +42,13 @@ export const writeNote = async (note: TextNote, forceOverwrite?: Boolean) => {
       name: 'confirm',
       message: `Note named: '${note.title}' exists, overwrite?`,
     });
-    if (confirm) {
-      const updatedNotes = { ...notes, [note.title]: { ...note } };
-      writeFileSync(file(), JSON.stringify(updatedNotes));
-      return console.log(`Updated note: ${note.title}`);
+    if (!confirm) {
+      return console.log(`nothing updated`);
     }
-    return console.log(`nothing updated`);
-  } else {
-    const updatedNotes = { ...notes, [note.title]: { ...note } };
-    writeFileSync(file(), JSON.stringify(updatedNotes));
-    return console.log(`Updated note: ${note.title}`);
   }
+  const updatedNotes = { ...notes, [note.title]: { ...note } };
+  writeFileSync(file(), JSON.stringify(updatedNotes));
+  return console.log(`Updated note: ${note.title}`);
 };
 
 export const deleteNote = async (note: TextNote, hasAPIToken: Boolean) => {
