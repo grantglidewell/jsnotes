@@ -68,8 +68,6 @@ module.exports = async () => {
     if (selection === 'Configure Todoist API') {
       config = true;
     }
-    return execNote({ q, n, l, e, d, h, clear, config, _, hasAPIToken }, notes);
-  } else {
-    return execNote({ q, n, l, e, d, h, clear, config, _, hasAPIToken }, notes);
   }
+  return execNote({ q, n, l, e, d, h, clear, config, _, hasAPIToken }, notes);
 };
