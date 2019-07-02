@@ -87,7 +87,7 @@ export default async (
         message: 'Notes:',
         choices: Object.keys(notes),
       });
-      return editNote(notes[selected]);
+      return editNote(notes[selected], hasAPIToken);
     }
     return console.log("No notes :( --  use '-n' to create a new note");
   }
@@ -105,7 +105,7 @@ export default async (
         message: 'are you sure you want to delete this note?',
       },
     ]);
-    return confirm ? deleteNote(selected, hasAPIToken) : null;
+    return confirm ? deleteNote(notes[selected], hasAPIToken) : null;
   }
   if (clear) {
     return clearAll();

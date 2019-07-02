@@ -1,5 +1,7 @@
 import { TextNote, Notes } from '../interfaces';
 
+import axios from 'axios';
+
 import { api } from './api';
 import { config, writeNote, readNotes } from '../disk';
 
@@ -60,11 +62,11 @@ export const updateItem = (note: TextNote) => {
   });
 };
 
-export const deleteItem = (noteId: string) => {
+export const deleteItem = (note: TextNote) => {
   const { token } = config();
-  return api({
-    url: `https://beta.todoist.com/API/v8/tasks/${noteId}`,
-    method: 'DELETE',
-    token,
+  return axios.delete(`https://beta.todoist.com/API/v8/tasks/${note.id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 };

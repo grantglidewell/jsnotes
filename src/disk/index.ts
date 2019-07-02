@@ -55,14 +55,14 @@ export const writeNote = async (note: TextNote, forceOverwrite?: Boolean) => {
   }
 };
 
-export const deleteNote = async (note: string, hasAPIToken: Boolean) => {
+export const deleteNote = async (note: TextNote, hasAPIToken: Boolean) => {
   const notes: Notes = readNotes();
-  delete notes[note];
+  delete notes[note.title];
   if (hasAPIToken) {
     await deleteItem(note);
   }
   writeFileSync(file(), JSON.stringify(notes));
-  return console.log(`Deleted ${note}`);
+  return console.log(`Deleted ${note.title}`);
 };
 
 export const clearAll = async () => {
@@ -70,7 +70,7 @@ export const clearAll = async () => {
     type: 'confirm',
     name: 'confirm',
     default: false,
-    message: `Are you sure you want to Delete all notes?`,
+    message: `Are you sure you want to Delete all local notes?`,
   });
 
   if (confirm) {
