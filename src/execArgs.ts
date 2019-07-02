@@ -4,7 +4,7 @@ import { AppFlags } from './interfaces';
 import * as inquirer from 'inquirer';
 
 import { createItem } from './api';
-import { writeNote, deleteNote, clearAll } from './handleJson';
+import { writeNote, deleteNote, clearAll } from './disk';
 import editNote from './editNote';
 import printNote from './printNote';
 import configureAPI from './api/configure';

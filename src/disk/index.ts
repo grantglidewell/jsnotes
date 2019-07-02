@@ -1,4 +1,4 @@
-import { TextNote, ListNote, Notes } from './interfaces';
+import { TextNote, ListNote, Notes, Config } from '../interfaces';
 
 import { createPromptModule } from 'inquirer';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
@@ -6,7 +6,7 @@ import * as os from 'os';
 
 const prompt = createPromptModule();
 
-const file = (): string => {
+export const file = (): string => {
   const home = `${os.homedir()}/jsnotes/data.json`;
   if (!existsSync(home)) {
     if (!existsSync(`${os.homedir()}/jsnotes`)) {
@@ -15,6 +15,17 @@ const file = (): string => {
     writeFileSync(home, '{}');
   }
   return home;
+};
+
+export const config = (): Config => {
+  const config = `${os.homedir()}/jsnotes/config.json`;
+  if (!existsSync(config)) {
+    if (!existsSync(`${os.homedir()}/jsnotes`)) {
+      mkdirSync(`${os.homedir()}/jsnotes`);
+    }
+    writeFileSync(config, JSON.stringify({ token: '', projectId: '' }));
+  }
+  return JSON.parse(readFileSync(config).toString());
 };
 
 export const readNotes = (): Notes => {

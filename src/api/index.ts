@@ -1,7 +1,7 @@
 import { TextNote } from '../interfaces';
 
 import { api } from './api';
-import { config } from './configure';
+import { config } from '../disk';
 
 export const fetchItems = () => {
   const { token, projectId } = config();

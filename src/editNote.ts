@@ -1,7 +1,7 @@
 import { TextNote, ListNote } from './interfaces';
 import * as inquirer from 'inquirer';
 
-import { writeNote } from './handleJson';
+import { writeNote } from './disk';
 
 const { createPromptModule } = inquirer;
 const editPrompt = createPromptModule();

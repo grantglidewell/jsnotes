@@ -1,9 +1,9 @@
 /* eslint-disable consistent-return */
 import * as inquirer from 'inquirer';
 
-import { readNotes } from './handleJson';
-import { config as isConfig } from './api/configure';
-import execNote from './execNote';
+import { readNotes } from './disk';
+import { config as isConfig } from './disk';
+import execNote from './execArgs';
 
 const { createPromptModule } = inquirer;
 const initialPrompt = createPromptModule();
