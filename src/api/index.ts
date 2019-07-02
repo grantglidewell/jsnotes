@@ -1,21 +1,47 @@
-import { TextNote } from '../interfaces';
+import { TextNote, Notes } from '../interfaces';
 
 import { api } from './api';
-import { config } from '../disk';
+import { config, writeNote, readNotes } from '../disk';
 
-export const fetchItems = () => {
+export const fetchItems = async (notes: Notes) => {
   const { token, projectId } = config();
-  const apiNotes = api({
-    url: `https://beta.todoist.com/API/v8/projects/${projectId}`,
+  const apiNotes = await api<
+    [
+      {
+        project_id: number | string;
+        id: number | string;
+        content: string;
+        created: string;
+      }
+    ]
+  >({
+    url: `https://beta.todoist.com/API/v8/tasks`,
     method: 'GET',
     token,
   });
-  // update local notes with apiNotes
+  const remoteNotes = apiNotes.filter(note => note.project_id === projectId);
+
+  // remote is the source of truth and overrides changes
+  remoteNotes.map(note => {
+    const title =
+      (Object.values(notes).find(local => local.id === note.id) &&
+        Object.values(notes).find(local => local.id === note.id)!.title) ||
+      `Todoist > ${new Date(note.created).toLocaleString()}`;
+    writeNote(
+      {
+        id: note.id,
+        body: { message: note.content },
+        title,
+      },
+      true
+    );
+  });
+  return readNotes();
 };
 
 export const createItem = async (note: TextNote) => {
   const { token, projectId } = config();
-  const createdNote = await api({
+  const createdNote = await api<{ id: string }>({
     url: `https://beta.todoist.com/API/v8/tasks`,
     method: 'POST',
     token,
@@ -34,10 +60,10 @@ export const updateItem = (note: TextNote) => {
   });
 };
 
-export const deleteItem = (note: TextNote) => {
+export const deleteItem = (noteId: string) => {
   const { token } = config();
   return api({
-    url: `https://beta.todoist.com/API/v8/tasks/${note.id}`,
+    url: `https://beta.todoist.com/API/v8/tasks/${noteId}`,
     method: 'DELETE',
     token,
   });

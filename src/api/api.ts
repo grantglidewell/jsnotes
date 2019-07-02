@@ -3,7 +3,7 @@ import { ApiInterface } from '../interfaces';
 import v4 from 'uuid/v4';
 import fetch from 'axios';
 
-export function api<T>(args: ApiInterface): Promise<{ id: string }> {
+export function api<T>(args: ApiInterface): Promise<T> {
   const { url, token, payload, method } = args;
 
   const requestOptions = {
@@ -24,10 +24,12 @@ export function api<T>(args: ApiInterface): Promise<{ id: string }> {
         throw new Error(response.statusText);
       }
     })
-    .catch(err =>
+    .catch(err => {
       console.error(
-        `there was a problem with the request ${err.statusText &&
-          err.statusText}`
-      )
-    );
+        `there was a problem with the request ${(err.statusText &&
+          err.statusText) ||
+          err}`
+      );
+      return err;
+    });
 }

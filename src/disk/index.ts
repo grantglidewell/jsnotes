@@ -1,8 +1,9 @@
-import { TextNote, ListNote, Notes, Config } from '../interfaces';
+import { TextNote, Notes, Config } from '../interfaces';
 
 import { createPromptModule } from 'inquirer';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import * as os from 'os';
+import { deleteItem } from '../api';
 
 const prompt = createPromptModule();
 
@@ -32,10 +33,10 @@ export const readNotes = (): Notes => {
   return JSON.parse(readFileSync(file()).toString());
 };
 
-export const writeNote = async (note: TextNote | ListNote) => {
+export const writeNote = async (note: TextNote, forceOverwrite?: Boolean) => {
   const notes: Notes = readNotes();
   // confirm replace note
-  if (notes[note.title]) {
+  if (notes[note.title] && !forceOverwrite) {
     const { confirm } = await prompt({
       type: 'confirm',
       name: 'confirm',
@@ -54,9 +55,12 @@ export const writeNote = async (note: TextNote | ListNote) => {
   }
 };
 
-export const deleteNote = (note: string) => {
+export const deleteNote = async (note: string, hasAPIToken: Boolean) => {
   const notes: Notes = readNotes();
   delete notes[note];
+  if (hasAPIToken) {
+    await deleteItem(note);
+  }
   writeFileSync(file(), JSON.stringify(notes));
   return console.log(`Deleted ${note}`);
 };

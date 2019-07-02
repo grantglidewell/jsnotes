@@ -1,9 +1,9 @@
 /* eslint-disable consistent-return */
-import { TextNote, ListNote, Notes } from './interfaces';
+import { TextNote, Notes } from './interfaces';
 import { AppFlags } from './interfaces';
 import * as inquirer from 'inquirer';
 
-import { createItem } from './api';
+import { createItem, fetchItems } from './api';
 import { writeNote, deleteNote, clearAll } from './disk';
 import editNote from './editNote';
 import printNote from './printNote';
@@ -30,63 +30,52 @@ export default async (
   }
 
   if (n) {
-    const { type, title } = await prompt([
+    const { title } = await prompt([
       { type: 'input', name: 'title', message: 'Title:' },
-      {
-        type: 'list',
-        name: 'type',
-        choices: ['text', 'checklist'],
-        message: 'Type:',
-      },
     ]);
-    if (type === 'text') {
-      const { body } = await prompt({
-        type: 'input',
-        name: 'body',
-        message: 'Note:',
-      });
-      const textNote: TextNote = {
-        title,
-        body: { message: body },
-        type: 'text',
-      };
-      if (hasAPIToken) {
-        const { id } = await createItem(textNote);
-        textNote.id = id;
-      }
-      writeNote(textNote);
-      return console.log(`Note created with title: ${title}`);
+    const { body } = await prompt({
+      type: 'input',
+      name: 'body',
+      message: 'Note:',
+    });
+    const textNote: TextNote = {
+      title,
+      body: { message: body },
+    };
+    if (hasAPIToken) {
+      const { id } = await createItem(textNote);
+      textNote.id = id;
     }
-    if (type === 'checklist') {
-      const { body } = await prompt({
-        type: 'input',
-        name: 'body',
-        message: 'Items (separated by comma):',
-      });
-      const listNote: ListNote = {
-        title,
-        body: { items: body.split(','), completed: [] },
-        type: 'checklist',
-      };
-      writeNote(listNote);
-      return console.log(`Note created with title: ${title}`);
-    }
+    writeNote(textNote);
+    return console.log(`Note created with title: ${title}`);
   }
   if (q) {
     const body = _.join(' ').slice(1);
     const title = new Date().toLocaleString();
-    writeNote({ title, body: { message: body }, type: 'text' });
+    const quickNote: TextNote = { title, body: { message: body } };
+    if (hasAPIToken) {
+      const { id } = await createItem(quickNote);
+      quickNote.id = id;
+    }
+    writeNote(quickNote);
     return console.log(`Note created with title: ${title}`);
   }
   if (l) {
-    if (Object.keys(notes).length) {
+    let allNotes: Notes;
+    if (hasAPIToken) {
+      // check remote for updated notes
+      allNotes = await fetchItems(notes);
+    } else {
+      allNotes = notes;
+    }
+    if (Object.keys(allNotes).length) {
       const { selected } = await prompt({
         type: 'list',
         name: 'selected',
         message: 'Notes:',
-        choices: Object.keys(notes),
+        choices: Object.keys(allNotes),
       });
-      return printNote(notes[selected]);
+      return printNote(allNotes[selected]);
     }
     return console.log("No notes :( --  use '-n' to create a new note");
   }
@@ -116,12 +105,12 @@ export default async (
         message: 'are you sure you want to delete this note?',
       },
     ]);
-    return confirm ? deleteNote(selected) : null;
+    return confirm ? deleteNote(selected, hasAPIToken) : null;
   }
   if (clear) {
     return clearAll();
   }
   if (config) {
-    return configureAPI();
+    return configureAPI(notes);
   }
 };

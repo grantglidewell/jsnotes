@@ -1,7 +1,8 @@
+import { Notes } from '../interfaces';
+
 import { api } from './api';
 import { createItem } from './index';
-import { config } from '../disk';
-import { readNotes } from '../disk';
+import { config, writeNote } from '../disk';
 
 import { writeFileSync } from 'fs';
 import * as inquirer from 'inquirer';
@@ -11,7 +12,7 @@ const prompt = createPromptModule();
 
 import * as os from 'os';
 
-export default async () => {
+export default async (notes: Notes) => {
   const { projectId, token } = config();
   if (projectId && token) {
     console.log('you currently have a configuration');
@@ -60,17 +61,11 @@ export default async () => {
   if (!confirm) {
     return null;
   }
-  // add existing TEXT notes to that project
-  const notes = readNotes();
-  if (Object.keys(notes).find(note => notes[note].type === 'text')) {
+  // add existing notes to that project
+  if (Object.keys(notes).length) {
     Object.entries(notes).map(async ([_key, note]) => {
-      if (note.type === 'text') {
-        await createItem(note)
-          .then(res => {
-            //update note with the appropriate id
-          })
-          .catch(er => er);
-      }
+      const { id } = await createItem(note);
+      writeNote({ ...note, id }, true);
     });
   }
 };

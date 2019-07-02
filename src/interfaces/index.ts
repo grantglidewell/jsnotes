@@ -1,18 +1,11 @@
 export interface TextNote {
   title: string;
   body: { message: string };
-  type: 'text';
-  id?: string;
-}
-
-export interface ListNote {
-  title: string;
-  body: { items: Array<string>; completed: Array<string> };
-  type: 'checklist';
+  id?: string | number;
 }
 
 export interface Notes {
-  [key: string]: ListNote | TextNote;
+  [key: string]: TextNote;
 }
 
 export interface AppFlags {
