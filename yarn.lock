@@ -466,6 +466,19 @@ jsnotes@^0.3.2:
     minimist "^1.2.0"
     uuid "^3.3.2"
 
+jsnotes@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/jsnotes/-/jsnotes-0.3.3.tgz#447f25aa7fbb2785955101eb24971600674be375"
+  integrity sha512-x0nEsRu15KzUffMEFd2/02OcyVrk5M7dXfm90Q/6LjxQLEziqGRuVBgjqfdCXDtmRg5gihovg2JIniKmIU+9XA==
+  dependencies:
+    axios "^0.19.0"
+    boxen "^3.2.0"
+    global "^4.4.0"
+    inquirer "^6.3.1"
+    jsnotes "^0.3.2"
+    minimist "^1.2.0"
+    uuid "^3.3.2"
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
