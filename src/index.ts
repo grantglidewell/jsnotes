@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* eslint-disable consistent-return */
 import * as inquirer from 'inquirer';
 
@@ -10,7 +11,7 @@ const initialPrompt = createPromptModule();
 
 var argv = require('minimist')(process.argv.slice(2));
 
-module.exports = async () => {
+(async () => {
   const { token, projectId } = isConfig();
   const hasAPIToken = Boolean(token && projectId);
 
@@ -70,4 +71,4 @@ module.exports = async () => {
     }
   }
   return execNote({ q, n, l, e, d, h, clear, config, _, hasAPIToken }, notes);
-};
+})();
