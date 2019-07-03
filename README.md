@@ -15,11 +15,18 @@ or
 
 ## Use
 
+
 ```
 jsn // menu
-jsn -n // create a new note
-jsn -l // list notes
-jsn -h // help menu
+
+|  list   │          'jsn -l or l to list out notes'          │
+│  edit   │      'jsn -e or e to list out notes to edit'      │
+│   new   │ 'jsn -n or n to create a new note (with prompts)' │
+│  quick  │    'jsn -q or q used create a quick text note'    │
+│ delete  │        'jsn -d to select a note to delete'        │
+│  clear  │           '--clear to delete all notes'           │
+│ config  │       '--config to set up the Todoist API'        │
+│ version │          '--version to get the version'           |
 ```
 
 ### Todoist configuration
