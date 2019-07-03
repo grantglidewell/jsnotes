@@ -16,6 +16,25 @@ export default async (
   { q, n, l, d, h, e, clear, config, _, hasAPIToken }: AppFlags,
   notes: Notes
 ) => {
+  const selectNote = async (postExec: Function) => {
+    let allNotes: Notes;
+    if (hasAPIToken) {
+      // check remote for updated notes
+      allNotes = await fetchItems(notes);
+    } else {
+      allNotes = notes;
+    }
+    if (Object.keys(allNotes).length) {
+      const { selected } = await prompt({
+        type: 'list',
+        name: 'selected',
+        message: 'Notes:',
+        choices: Object.keys(allNotes),
+      });
+      return postExec(allNotes[selected]);
+    }
+    return console.log("No notes :( --  use '-n' to create a new note");
+  };
   if (h) {
     return console.table({
       list: 'jsn -l or l to list out notes',
@@ -61,35 +80,10 @@ export default async (
     return console.log(`Note created with title: ${title}`);
   }
   if (l) {
-    let allNotes: Notes;
-    if (hasAPIToken) {
-      // check remote for updated notes
-      allNotes = await fetchItems(notes);
-    } else {
-      allNotes = notes;
-    }
-    if (Object.keys(allNotes).length) {
-      const { selected } = await prompt({
-        type: 'list',
-        name: 'selected',
-        message: 'Notes:',
-        choices: Object.keys(allNotes),
-      });
-      return printNote(allNotes[selected]);
-    }
-    return console.log("No notes :( --  use '-n' to create a new note");
+    selectNote(printNote);
   }
   if (e) {
-    if (Object.keys(notes).length) {
-      const { selected } = await prompt({
-        type: 'list',
-        name: 'selected',
-        message: 'Notes:',
-        choices: Object.keys(notes),
-      });
-      return editNote(notes[selected], hasAPIToken);
-    }
-    return console.log("No notes :( --  use '-n' to create a new note");
+    selectNote(editNote);
   }
   if (d) {
     const { selected, confirm } = await prompt([
