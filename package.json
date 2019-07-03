@@ -1,7 +1,7 @@
 {
   "name": "jsnotes",
   "version": "0.2.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "license": "MIT",
   "preferGlobal": true,
   "author": "Grant Glidewell <grant@grantglidewell.com>",
@@ -13,20 +13,22 @@
     "todo"
   ],
   "bin": {
-    "jsn": "dist/index.js"
+    "jsn": "index.js"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "boxen": "^3.2.0",
     "inquirer": "^6.3.1",
-    "jsonfile": "^5.0.0",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/inquirer": "^6.0.3",
-    "@types/jsonfile": "^5.0.0",
     "@types/minimist": "^1.2.0",
     "@types/node": "^12.0.4",
+    "@types/node-fetch": "^2.3.6",
     "@types/rx": "^4.1.1",
+    "@types/uuid": "^3.4.4",
     "prettier": "1.16.4",
     "pretty-quick": "1.10.0",
     "typescript": "^3.5.1"

@@ -1,19 +1,22 @@
-#!/usr/bin/env node
 /* eslint-disable consistent-return */
 import * as inquirer from 'inquirer';
 
-import { readNotes } from './handleJson';
-import execNote from './execNote';
+import { readNotes } from './disk';
+import { config as isConfig } from './disk';
+import execNote from './execArgs';
 
 const { createPromptModule } = inquirer;
 const initialPrompt = createPromptModule();
 
 var argv = require('minimist')(process.argv.slice(2));
 
-(async () => {
+module.exports = async () => {
+  const { token, projectId } = isConfig();
+  const hasAPIToken = Boolean(token && projectId);
+
   const notes = readNotes();
   const { _ } = argv;
-  let { q, n, l, d, h, e, clear } = argv;
+  let { q, n, l, d, h, e, config, clear } = argv;
   if (_.includes('l')) {
     l = true;
   }
@@ -26,7 +29,7 @@ var argv = require('minimist')(process.argv.slice(2));
   if (_.includes('e')) {
     e = true;
   }
-  const noArgs = !l && !n && !d && !q && !e && !clear;
+  const noArgs = !l && !n && !d && !q && !e && !clear && !config;
 
   if (noArgs) {
     const { selection } = await initialPrompt({
@@ -39,6 +42,7 @@ var argv = require('minimist')(process.argv.slice(2));
         'Edit Notes',
         'Delete Notes',
         'Clear Notes',
+        'Configure Todoist API',
         'Help',
       ],
     });
@@ -61,8 +65,9 @@ var argv = require('minimist')(process.argv.slice(2));
     if (selection === 'Help') {
       h = true;
     }
-    return execNote({ q, n, l, e, d, h, clear, _ }, notes);
-  } else {
-    return execNote({ q, n, l, e, d, h, clear, _ }, notes);
+    if (selection === 'Configure Todoist API') {
+      config = true;
+    }
   }
-})();
+  return execNote({ q, n, l, e, d, h, clear, config, _, hasAPIToken }, notes);
+};

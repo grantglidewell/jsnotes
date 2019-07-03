@@ -1,17 +1,11 @@
 export interface TextNote {
   title: string;
   body: { message: string };
-  type: 'text';
-}
-
-export interface ListNote {
-  title: string;
-  body: { items: Array<string>; completed: Array<string> };
-  type: 'checklist';
+  id?: string | number;
 }
 
 export interface Notes {
-  [key: string]: ListNote | TextNote;
+  [key: string]: TextNote;
 }
 
 export interface AppFlags {
@@ -22,5 +16,19 @@ export interface AppFlags {
   h: boolean;
   e: boolean;
   clear: boolean;
+  config: boolean;
   _: Array<string>;
+  hasAPIToken: Boolean;
+}
+
+export interface Config {
+  token: string;
+  projectId: string;
+}
+
+export interface ApiInterface {
+  url: string;
+  token: string;
+  method: 'GET' | 'POST' | 'DELETE';
+  payload?: { project_id?: string; content?: string; name?: string };
 }
