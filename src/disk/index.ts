@@ -7,12 +7,16 @@ import { deleteItem } from '../api';
 
 const prompt = createPromptModule();
 
+const checkForDir = () => {
+  if (!existsSync(`${os.homedir()}/jsnotes`)) {
+    mkdirSync(`${os.homedir()}/jsnotes`);
+  }
+};
+
 export const file = (): string => {
   const home = `${os.homedir()}/jsnotes/data.json`;
   if (!existsSync(home)) {
-    if (!existsSync(`${os.homedir()}/jsnotes`)) {
-      mkdirSync(`${os.homedir()}/jsnotes`);
-    }
+    checkForDir();
     writeFileSync(home, '{}');
   }
   return home;
@@ -21,9 +25,7 @@ export const file = (): string => {
 export const config = (): Config => {
   const config = `${os.homedir()}/jsnotes/config.json`;
   if (!existsSync(config)) {
-    if (!existsSync(`${os.homedir()}/jsnotes`)) {
-      mkdirSync(`${os.homedir()}/jsnotes`);
-    }
+    checkForDir();
     writeFileSync(config, JSON.stringify({ token: '', projectId: '' }));
   }
   return JSON.parse(readFileSync(config).toString());
