@@ -1,18 +1,19 @@
 # JS Notes
 
-<p align="center">
 [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
 ![NPM](https://img.shields.io/npm/l/jsnotes.svg)
-</p>
+
 a command line note taking application
 
-### Installation
+## Installation
 
 `yarn global add jsnotes`
+
 or
+
 `npm i -g jsnotes`
 
-### Use
+## Use
 
 ```
 jsn // menu
