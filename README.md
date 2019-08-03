@@ -5,7 +5,7 @@
 
 a command line note taking application
 
-![Demo](https://github.com/grantglidewell/jsnotes/blob/master/render1562255165813.gif)
+![Demo](https://github.com/grantglidewell/jsnotes/blob/master/render1562255165813.gif?raw=true)
 
 ## Installation
 
