@@ -72,7 +72,7 @@ export const clearAll = async () => {
   });
 
   if (confirm) {
-    return writeFileSync(file(), '');
+    return writeFileSync(file(), '{}');
   }
   return null;
 };

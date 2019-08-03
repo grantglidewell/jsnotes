@@ -14,6 +14,7 @@ export const fetchItems = async (notes: Notes) => {
         id: number | string;
         content: string;
         created: string;
+        completed: boolean;
       }
     ]
   >({
@@ -21,7 +22,11 @@ export const fetchItems = async (notes: Notes) => {
     method: 'GET',
     token,
   });
-  const remoteNotes = apiNotes.filter(note => note.project_id === projectId);
+
+  // only return notes that are active with the current project id
+  const remoteNotes = apiNotes.filter(
+    note => note.project_id === projectId && !note.completed
+  );
 
   // remote is the source of truth and overrides changes
   remoteNotes.map(note => {
@@ -29,6 +34,14 @@ export const fetchItems = async (notes: Notes) => {
       (Object.values(notes).find(local => local.id === note.id) &&
         Object.values(notes).find(local => local.id === note.id)!.title) ||
       `Todoist > ${new Date(note.created).toLocaleString()}`;
+
+    if (notes[title]) {
+      // remote and local note exist
+      if (notes[title].body.message === note.content) {
+        // content has not changed
+        return null;
+      }
+    }
     writeNote(
       {
         id: note.id,

@@ -70,7 +70,7 @@ export default async (
   }
   if (q) {
     const body = _.join(' ').slice(1);
-    const title = new Date().toLocaleString();
+    const title = `quick-${new Date().toLocaleString()}`;
     const quickNote: TextNote = { title, body: { message: body } };
     if (hasAPIToken) {
       const { id } = await createItem(quickNote);
