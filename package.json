@@ -1,6 +1,6 @@
 {
   "name": "jsnotes",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "main": "dist/index.js",
   "license": "MIT",
   "preferGlobal": true,
@@ -19,9 +19,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "boxen": "^3.2.0",
-    "global": "^4.4.0",
     "inquirer": "^6.3.1",
-    "jsnotes": "^0.3.3",
     "minimist": "^1.2.0",
     "uuid": "^3.3.2"
   },
