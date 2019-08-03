@@ -37,18 +37,24 @@ export default async (notes: Notes) => {
         'Add your Token from Todoist \n you can create one in your Todoist account under Settings > Integrations \n API Token:',
     },
   ]);
-  // use the token to create a JSNotes project
-  const { id } = await api({
+  // find the inbox project ID
+  const inboxProject = await api<[{ name: string; id: string }]>({
     token: token || userToken,
     url: `https://beta.todoist.com/API/v8/projects`,
-    method: 'POST',
-    payload: { name: 'JSNotes' },
-  });
+    method: 'GET',
+  }).then(projects => projects.find(project => project.name === 'Inbox'));
   // store the token and project id in the config
-  writeFileSync(
-    `${os.homedir()}/jsnotes/config.json`,
-    JSON.stringify({ token: token || userToken, projectId: id })
-  );
+  if (inboxProject && inboxProject.id) {
+    writeFileSync(
+      `${os.homedir()}/jsnotes/config.json`,
+      JSON.stringify({ token: token || userToken, projectId: inboxProject.id })
+    );
+  } else {
+    console.error(
+      'There was a problem finding the Inbox of your todoist account'
+    );
+    return null;
+  }
   console.log('Configuration complete.');
   const { confirm } = await prompt([
     {
