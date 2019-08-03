@@ -26,5 +26,5 @@ export default async (note: TextNote, hasAPIToken: Boolean) => {
   if (hasAPIToken && newNote.id) {
     await updateItem(newNote);
   }
-  return writeNote(newNote);
+  return writeNote(newNote, true);
 };

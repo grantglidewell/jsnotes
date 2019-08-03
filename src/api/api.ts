@@ -18,7 +18,7 @@ export function api<T>(args: ApiInterface): Promise<T> {
   };
   return fetch(url, requestOptions)
     .then(response => {
-      if (response.status < 400 && response.data) {
+      if (response.status < 400) {
         return response.data;
       } else {
         throw new Error(response.statusText);

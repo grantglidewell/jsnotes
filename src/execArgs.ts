@@ -31,7 +31,7 @@ export default async (
         message: 'Notes:',
         choices: Object.keys(allNotes),
       });
-      return postExec(allNotes[selected]);
+      return postExec(allNotes[selected], hasAPIToken);
     }
     return console.log("No notes :( --  use '-n' to create a new note");
   };

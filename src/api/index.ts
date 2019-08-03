@@ -71,7 +71,7 @@ export const updateItem = (note: TextNote) => {
     url: `https://beta.todoist.com/API/v8/tasks/${note.id}`,
     method: 'POST',
     token,
-    payload: { content: `${note.body.message}` },
+    payload: { content: note.body.message },
   });
 };
 
