@@ -1,10 +1,14 @@
 {
   "name": "jsnotes",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "main": "dist/index.js",
   "license": "MIT",
   "preferGlobal": true,
   "author": "Grant Glidewell <grant@grantglidewell.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grantglidewell/jsnotes"
+  },
   "keywords": [
     "notes",
     "cli",
